@@ -1,0 +1,48 @@
+﻿@model FORO_D.Models.Respuesta
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Eliminar</h1>
+
+<h3>¿Desea Eliminar?</h3>
+<div>
+    <h4>Respuesta</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Descripcion)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Descripcion)
+        </dd>
+
+        <dt hidden="hidden" class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Pregunta)
+        </dt>
+        <dd hidden="hidden" class = "col-sm-10">
+            @Html.DisplayFor(model => model.Pregunta.Descripcion)
+        </dd class>
+
+        <dt hidden="hidden" class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Miembro)
+        </dt>
+        <dd hidden="hidden" class = "col-sm-10">
+            @Html.DisplayFor(model => model.Miembro.Apellido)
+        </dd class>
+
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Fecha)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Fecha)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="RespuestaId" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-controller="Preguntas" asp-action="Details" asp-route-id=@Model.PreguntaId>Atras</a>
+    </form>
+</div>

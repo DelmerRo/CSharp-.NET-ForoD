@@ -1,0 +1,74 @@
+﻿.entradas {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    border-left: 1px solid var(--primary-dark);
+    border-right: 1px solid var(--primary-dark);
+    border-bottom: 1px solid var(--primary-dark);
+    border-bottom-left-radius: 35px;
+}
+
+    .post.details {
+        margin-top: 20px;
+        width: 100%;
+    }
+
+    .post:last-of-type {
+        margin-bottom: 0;
+    }
+
+.entrada-header {
+    height: 30px;
+    padding-left: 5px;
+    line-height: 27px;
+    color: var(--primary-light);
+    background-color: var(--primary-darkest);
+}
+
+    .post-header a {
+        margin-left: 4px;
+        font-weight: 800;
+        color: #b71c1c;
+    }
+
+    .post-header span {
+        font-weight: 800;
+        color: #43a047;
+    }
+
+    .post-header.details {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        height: 50px;
+    }
+
+.post-header-details-pills {
+    display: flex;
+    flex-direction: row;
+}
+
+.post-title {
+    padding: 20px;
+}
+
+.post-details-questions {
+    width: 955px;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 25px;
+    background-color: var(--primary-light);
+    -webkit-box-shadow: 0px 0px 7px 2px #000000;
+    box-shadow: 0px 0px 7px -5px #000000;
+}
+
+    .post-details-questions p:first-child {
+        font-size: 1.1rem;
+        font-weight: 800;
+    }
+
+    .post-details-questions div {
+        margin: 5px 0;
+    }

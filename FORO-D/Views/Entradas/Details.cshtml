@@ -1,0 +1,134 @@
+﻿@model IEnumerable<FORO_D.Models.Pregunta>
+
+@{ ViewData["Title"] = "Details";
+    int UsuarioId = 0;
+    Entrada entrada = ViewBag.Entrada;
+
+    if (User.Claims.Any())
+    {
+        UsuarioId = Int32.Parse(User.Claims.First().Value);
+    }
+    
+}
+
+<h1 class="btn-primary text-center text-white"> @Html.DisplayNameFor(model => model.Entrada)</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(entrada => entrada.Entrada.Titulo)
+        </dt>
+        <dd class="col-sm-10">
+            @entrada.Titulo
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(entrada => entrada.Entrada.Descripcion)
+        </dt>
+        <dd class="col-sm-10">
+            @entrada.Descripcion
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(entrada => entrada.Entrada.Fecha)
+        </dt>
+        <dd class="col-sm-10">
+            @entrada.Fecha
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(entrada => entrada.Entrada.Privada)
+        </dt>
+        <dd class="col-sm-10">
+            @if (entrada.Privada)
+                {
+                    <p>Si</p>                            }
+                else
+                {
+        <p>No</p>
+                              }                              
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(entrada => entrada.Entrada.Miembro.NombreCompleto)
+        </dt>
+        <dd class="col-sm-10">
+            @entrada.Miembro.NombreCompleto
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(entrada => entrada.Entrada.Categoria.Nombre)
+        </dt>
+        <dd class="col-sm-10">
+            @entrada.Categoria.Nombre
+        </dd>
+    </dl>
+    @if (User.IsInRole("Miembro"))
+    {
+        <a class=" btn btn-success text-white" asp-controller="Preguntas" asp-action="Create" asp-route-id=@entrada.EntradaId>Agregar Pregunta</a>
+    }
+    else if (UsuarioId == 0)
+    {
+        <a class=" btn btn-success text-white" asp-controller="Preguntas" asp-action="Create" asp-route-id=@entrada.EntradaId>Agregar Pregunta</a>
+    }
+    <div align="right">
+        @if (User.IsInRole("Miembro") && entrada.MiembroId == UsuarioId)
+        {
+            <a class=" btn btn-primary" asp-action="Edit" asp-route-id=@entrada.EntradaId>Editar</a>
+        }
+        else if (User.IsInRole("Usuario"))
+        {
+            <a class="btn btn-primary" asp-action="Delete" asp-route-id="@entrada.EntradaId">Eliminar</a>
+        }
+
+        <a class="btn btn-primary" asp-controller="Entradas" asp-action="Index">Atras</a>
+
+    </div>
+    <br />
+    <h1 class="btn-info text-center text-white"> @Html.DisplayNameFor(model => model)</h1>
+    <table class="table">
+        <thead class="alert-secondary text-black-50">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Miembro)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Fecha)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Descripcion)
+                </th>
+                <th>
+                    Cantidad de respuestas:
+                </th>
+                <th>
+                    Accion:
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var unaPregunta in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => unaPregunta.Miembro.UserName)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => unaPregunta.Fecha)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => unaPregunta.Descripcion)
+                </td>
+                <td>
+                    @unaPregunta.Respuestas.Count()
+                </td>
+                <td>
+                    <a class="btn btn-success btn-sm m-1 text-white" asp-controller="Preguntas" asp-action="Details" asp-route-id="@unaPregunta.PreguntaId"> Ver Pregunta</a>
+
+                </td>
+            </tr>
+
+            }
+        </tbody>
+    </table>
+
+    <p class="">Se encontraron: @Model.Count() Preguntas en esta Entrada</p>
+</div>

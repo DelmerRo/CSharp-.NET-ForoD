@@ -1,0 +1,42 @@
+﻿@model IEnumerable<FORO_D.Models.MiembrosHabilitados>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Entrada)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Miembro)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Entrada.Descripcion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Miembro.Apellido)
+            </td>
+            <td>
+                @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
+                @*<a asp-controller="Entradas" asp-action="Aprobar" asp-route-id=@item.EntradaId>Aprobar</a>*@
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

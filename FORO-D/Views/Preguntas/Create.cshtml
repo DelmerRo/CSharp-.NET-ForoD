@@ -1,0 +1,43 @@
+﻿@model FORO_D.Models.Pregunta
+
+@{
+    ViewData["Title"] = "Create";
+    Entrada entrada = ViewBag.Entrada;
+}
+
+<h1>Create</h1>
+
+<h4>Pregunta</h4>
+<p>@entrada.Titulo</p>
+<p>@entrada.Descripcion</p>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="EntradaId" class="form-control" hidden readonly />
+            <div class="form-group">
+                <label asp-for="Descripcion" class="control-label"></label>
+                <textarea asp-for="Descripcion" class="form-control"></textarea>
+                <span asp-validation-for="Descripcion" class="text-danger"></span>
+            </div>
+        
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Activa" /> @Html.DisplayNameFor(model => model.Activa)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-controller="Entradas" asp-action="Details" asp-route-id=@Model.EntradaId>Atrás</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

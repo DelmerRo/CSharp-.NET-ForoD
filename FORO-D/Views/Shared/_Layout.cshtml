@@ -1,0 +1,151 @@
+﻿@inject SignInManager<Usuario> singInManager
+@using FORO_D.Models
+@using Microsoft.EntityFrameworkCore
+@inject FORO_D.Data.ForoContext _context
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Foro-D</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container">
+                <div class="navbar-header">
+                    <div class="navbar-header pull-left">
+                        <a class="navbar-brand" href="@Url.Action("Index", "Home")">
+                            <img src="~/Imagen/logo2.png" alt="Site Logo" style="height:50px; width: 50px" />
+                        </a>
+                    </div>
+                </div>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <ul class="navbar-nav flex-grow-1">
+                        @if (singInManager.IsSignedIn(User))
+                        {
+                            if (User.IsInRole("Miembro"))
+                            {
+                                <li class="btn btn-outline-secondary btn-light m-1">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                                </li>
+                                <li class="btn btn-outline-secondary btn-light m-1">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                                </li>
+                                <li class="btn btn-outline-secondary btn-light m-1">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="InformacionInstitucional"> Información institucional</a>
+                                </li>
+                                <li class="btn btn-outline-secondary btn-light m-1">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Miembros" asp-action="Index">Miembros</a>
+                                </li>
+
+                                <li class="btn btn-outline-secondary btn-light m-1">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Entradas" asp-action="Index">Entradas</a>
+                                </li>
+
+                                <li class="btn btn-outline-secondary btn-light m-1">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Entradas" asp-action="MisEntradas">Mis Entradas</a>
+                                </li>
+
+                                <li class="btn btn-outline-secondary btn-light m-1">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Entradas" asp-action="SolicitudesPendientes">Solicitudes Pendientes</a>
+                                </li>
+
+                                <li class="btn btn-outline-secondary btn-light m-1">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Categorias" asp-action="Details" asp-route-id="null">Categorías</a>
+                                </li>
+                             
+                            }
+                            else if (User.IsInRole("Usuario"))
+                            {
+                                <li class="btn btn-outline-secondary btn-light m-1">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Miembros" asp-action="Index">Miembros</a>
+                                </li>
+                                <li class="btn btn-outline-secondary btn-light m-1">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Usuarios" asp-action="Index">Usuarios</a>
+                                </li>
+                                <li class="btn btn-outline-secondary btn-light m-1">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Entradas" asp-action="Index">Entradas</a>
+                                </li>
+                                <li class="btn btn-outline-secondary btn-light m-1">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Categorias" asp-action="Index">Cantidad De Entradas Por Categoría</a>
+                                </li>
+                                <li class="btn btn-outline-secondary btn-light m-1">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Categorias" asp-action="Details" asp-route-id="null">Categorías</a>
+                                </li>
+                                <li class="btn btn-outline-secondary btn-light m-1">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="CrearAdministrador">Crear Administrador</a>
+                                </li>
+                            }
+
+                            <li>
+                                <a class="btn btn-danger btn-sm text-white m-1" asp-area="" asp-controller="Account" asp-action="CerrarSesion">Cerrar sesion</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <!-- Dropdown de Categorías -->
+                            <ul class="navbar-nav mr-auto">
+                                <li class="nav-item dropdown">
+                                    <a class="btn btn-outline-secondary btn-light dropdown-toggle m-1" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Categorías
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        @{
+                                            var categorias = await _context.Categorias.ToListAsync();
+                                        }
+                                        @foreach (var categoria in categorias)
+                                        {
+                                            <a class="dropdown-item" asp-controller="Categorias" asp-action="Details" asp-route-id="@categoria.CategoriaId">@categoria.Nombre</a>
+                                        }
+                                    </div>
+                                </li>
+                            </ul>
+                            <ul class="navbar-nav ml-auto">
+                                <!-- Botones de Registrar e Iniciar sesión -->
+                                <li class="nav-item">
+                                    <a class="btn btn-primary btn-sm m-1" asp-area="" asp-controller="Account" asp-action="Registrar">Registrar</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="btn btn-success btn-sm text-white m-1" asp-area="" asp-controller="Account" asp-action="IniciarSesion">Iniciar sesión</a>
+                                </li>
+                            </ul>
+                          
+                        }
+                    </ul>
+
+
+                </div>
+            </div>
+            @if (singInManager.IsSignedIn(User))
+            {
+                <span id="nav-welcome">Bienvenido <b>@User.Identity.Name</b></span> if (User.IsInRole("Miembro"))
+                                {
+                <a class="nav-link text-primary font-weight-bold" asp-area="" asp-controller="Miembros" asp-action="Edit" asp-route-id=@Int32.Parse(User.Claims.First().Value)> -  Mi Perfil</a> }
+                                else if (User.IsInRole("Usuario"))
+                                {
+                <a class="nav-link text-primary font-weight-bold" asp-area="" asp-controller="Usuarios" asp-action="Edit" asp-route-id=@Int32.Parse(User.Claims.First().Value)> -  Mi Perfil</a>}
+             }
+        </nav>
+    </header>
+
+    <div class="container">
+        <main role="main" class="pb-3" >
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2021 - FORO_D - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

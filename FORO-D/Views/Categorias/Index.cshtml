@@ -1,0 +1,33 @@
+﻿@model IEnumerable<FORO_D.Models.Categoria>
+
+@{ ViewData["Title"] = "Index"; }
+
+<h1 class="btn-primary text-center text-white">Categoría</h1>
+
+<p>
+    <a class=" btn btn-success text-white" asp-action="Create">Crear Categoría</a>
+</p>
+<table class="table">
+    <thead class="alert-secondary text-black-50">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>
+                Cantidad de Entradas
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.Nombre)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Entradas.Count)
+    </td>
+</tr>}
+    </tbody>
+</table>

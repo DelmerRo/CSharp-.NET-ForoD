@@ -1,0 +1,100 @@
+﻿@model IEnumerable<FORO_D.Models.Entrada>
+
+@{ ViewData["Title"] = "Entradas Creadas";
+
+    var listaDeCategorias = ViewBag.Categorias;
+    int UsuarioId = 0;
+    if (User.Claims.Any())
+    {
+        UsuarioId = Int32.Parse(User.Claims.First().Value);
+    } }
+<h1 class="btn-primary text-center text-white">Entradas</h1>
+<a class=" btn btn-success text-white" asp-action="Create">Crear Nueva Categoría</a>
+<div class="category-bar">
+    <a class="btn btn-info btn-sm m-1 text-white" asp-action="Details" asp-route-id="null">Todas Las Categorias</a>
+    @foreach (var unaCategoria in listaDeCategorias)
+    {
+
+        if (unaCategoria != null)
+        {
+<a class="btn btn-info btn-sm m-1 text-white" asp-controller="Categorias" asp-action="Details" asp-route-id="@unaCategoria.CategoriaId">@unaCategoria.Nombre</a>}
+}
+
+</div>
+
+<table class="table">
+    <thead class="alert-secondary text-black-50">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Titulo)
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+
+<tr>
+    <td>
+        @if (User.IsInRole("Miembro"))
+        {
+            @if (!item.MiembrosHabibilitados.Any((am => am.MiembroId == UsuarioId && am.EntradaId == item.EntradaId)) && item.Privada && User.IsInRole("Miembro") && item.MiembroId != UsuarioId)
+            {
+                <p class="alert-info">Publicado por: @item.Miembro.NombreCompleto el: @item.Fecha <a class="btn btn-danger btn-sm m-1 text-white" asp-controller="MiembrosHabilitados" asp-action="Create" asp-route-entradaId="@item.EntradaId"> privado</a></p>
+                <h2 class="post-title">@item.Titulo</h2>
+                <p> @item.Descripcion</p> }
+            else if (item.MiembrosHabibilitados.Any((am => am.MiembroId == UsuarioId && am.EntradaId == item.EntradaId && !am.Habilitado)) && item.Privada && User.IsInRole("Miembro") && item.MiembroId != UsuarioId)
+            {
+                <p class="alert-info">Publicado por: @item.Miembro.NombreCompleto el: @item.Fecha <span><a class="btn btn-warning btn-sm m-1 text-white">privado: Autorización pendiente</a></span></p>
+                <h2 class="post-title">@item.Titulo</h2>
+                <p> @item.Descripcion</p> }
+            else if (item.MiembrosHabibilitados.Any((am => am.MiembroId == UsuarioId && am.EntradaId == item.EntradaId && am.Habilitado)) && item.Privada && User.IsInRole("Miembro") && item.MiembroId != UsuarioId)
+            {
+                <p class="alert-info">Publicado por: @item.Miembro.NombreCompleto el: @item.Fecha <span><a class="btn btn-success btn-sm m-1 text-white"> privado: autorizado</a></span></p>
+                <a asp-controller="Entradas" asp-action="Details" asp-route-id="@item.EntradaId"><h2 class="post-title">@item.Titulo</h2></a>
+                <p> @item.Descripcion</p> }
+            else if (User.IsInRole("Miembro") && item.MiembroId == UsuarioId)
+            {
+                <p class="alert-info">Publicado por: @item.Miembro.NombreCompleto el: @item.Fecha <span><a class="btn btn-info btn-sm m-1 text-white">  Mis entradas</a></span></p>
+                <a asp-controller="Entradas" asp-action="Details" asp-route-id="@item.EntradaId"><h2 class="post-title">@item.Titulo</h2></a>
+                <p> @item.Descripcion</p> }
+            else //if(User.IsInRole("Miembro") && item.MiembroId != UsuarioId && !item.Privada)
+            {
+                if ((User.IsInRole("Miembro") && item.MiembroId != UsuarioId && !item.Privada))
+                {
+                    <p class="alert-info">Publicado por: @item.Miembro.NombreCompleto el: @item.Fecha</p>
+                    <a asp-controller="Entradas" asp-action="Details" asp-route-id="@item.EntradaId"><h2 class="post-title">@item.Titulo</h2></a>
+                    <p> @item.Descripcion</p>}
+
+            } }
+        else
+        {
+            if (!item.Privada)
+            {
+                <p class="alert-info">Publicado por: @item.Miembro.NombreCompleto el: @item.Fecha</p>
+                <a asp-controller="Entradas" asp-action="Details" asp-route-id="@item.EntradaId"><h2 class="post-title">@item.Titulo</h2></a>
+                 }
+            else if (User.IsInRole("Usuario"))
+            {
+                <p class="alert-info">Publicado por: @item.Miembro.NombreCompleto el: @item.Fecha <a class="btn btn-danger btn-sm m-1 text-white" @*asp-controller="MiembrosHabilitados" asp-action="Create" asp-route-entradaId="@item.EntradaId"*@> privado</a></p>
+                <a asp-controller="Entradas" asp-action="Details" asp-route-id="@item.EntradaId"><h2 class="post-title">@item.Titulo</h2></a>
+            }
+            else
+            {
+                <p class="alert-info">Publicado por: @item.Miembro.NombreCompleto el: @item.Fecha <a class="btn btn-danger btn-sm m-1 text-white" asp-controller="MiembrosHabilitados" asp-action="Create" asp-route-entradaId="@item.EntradaId"> privado</a></p>
+                <a @*asp-controller="Entradas" asp-action="Details" asp-route-id="@item.EntradaId"*@><h2 class="post-title">@item.Titulo</h2></a>
+            }
+            <p> @item.Descripcion</p>
+
+        }
+
+
+
+    </td>
+</tr>
+}
+    </tbody>
+</table>
+<p class="">Se encontraron: @Model.Count() Entradas en esta categoría</p>

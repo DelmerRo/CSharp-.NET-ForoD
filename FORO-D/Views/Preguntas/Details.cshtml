@@ -1,0 +1,237 @@
+﻿@model IEnumerable<FORO_D.Models.Respuesta>
+
+@{ ViewData["Title"] = "Details";
+    int respuestaMasLikes = ViewBag.idMasLikes;
+    int respuestaMasDislike = ViewBag.idMasDisLikes;
+    Pregunta pregunta = ViewBag.Pregunta;
+    int UsuarioId = 0;
+    if (User.Claims.Any())
+    {
+        UsuarioId = Int32.Parse(User.Claims.First().Value);
+    }
+    }
+<h1 class="btn-primary text-center text-white"> @Html.DisplayNameFor(model => model.Pregunta)</h1>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(pregunta => pregunta.Pregunta.Fecha)
+        </dt>
+        <dd class="col-sm-10">
+            @pregunta.Fecha
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(pregunta => pregunta.Pregunta.Miembro.NombreCompleto)
+        </dt>
+        <dd class="col-sm-10">
+            @pregunta.Miembro.NombreCompleto
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(pregunta => pregunta.Pregunta.Descripcion)
+        </dt>
+        <dd class="col-sm-10">
+            @pregunta.Descripcion
+        </dd>
+        <dt class="col-sm-2">
+            Estado
+        </dt>
+
+        @if (pregunta.Activa)
+        {
+            <dd class="col-sm-10">
+                Activa
+            </dd>
+ }
+        else
+        {
+            <dd class="col-sm-10">
+                Inactiva
+            </dd>
+}
+
+    </dl>
+    @if (pregunta.Activa && pregunta.MiembroId != UsuarioId && User.IsInRole("Miembro"))
+    {
+        <a class=" btn btn-success text-white" asp-controller="Respuestas" asp-action="Create" asp-route-id=@pregunta.PreguntaId>Responder</a>
+    }
+    <div align="right">
+
+        @if (User.IsInRole("Miembro") && pregunta.MiembroId == UsuarioId)
+        {
+            <a class=" btn btn-primary" asp-action="Edit" asp-route-id=@pregunta.PreguntaId>Editar</a>
+        }
+
+        else if (UsuarioId == 0)
+        {
+            <a class=" btn btn-success text-white" asp-controller="Respuestas" asp-action="Create" asp-route-id=@pregunta.PreguntaId>Responder</a>
+        }
+        <a class=" btn btn-primary" asp-controller="Entradas" asp-action="Details" asp-route-id=@pregunta.EntradaId>Atras</a>
+
+
+    </div>
+    <br />
+    <h1 class="btn-info text-center text-white"> @Html.DisplayNameFor(model => pregunta.Respuestas)</h1>
+    <table class="table">
+        <thead class="alert-secondary text-black-50">
+            <tr>
+                <th>
+                    <b> @Html.DisplayNameFor(respuestas => respuestas.Miembro)</b>
+                </th>
+                <th>
+                    <b>   @Html.DisplayNameFor(respuestas => respuestas.Fecha)</b>
+                </th>
+                <th>
+                    <b>  @Html.DisplayNameFor(respuestas => respuestas.Descripcion)</b>
+                </th>
+                <th>
+                    <b>Reaccion</b>
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var unaRespuesta in pregunta.Respuestas.OrderBy(p => p.Fecha))
+            {
+                if (unaRespuesta.RespuestaId == respuestaMasDislike && unaRespuesta.Reacciones.Where(p => p.MeGusta).Count() != unaRespuesta.Reacciones.Where(p => !p.MeGusta).Count())
+                {
+                    <tr class="alert-danger text-black-50">
+                        <td>
+                            @Html.DisplayFor(modelItem => unaRespuesta.Miembro.UserName)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => unaRespuesta.Fecha)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => unaRespuesta.Descripcion)
+                        </td>
+
+                        <td>
+                            <div class="reply liked">
+                                <div>
+                                    @unaRespuesta.Reacciones.Where(r => r.MeGusta).Count()
+                                    /
+                                    @unaRespuesta.Reacciones.Where(r => !r.MeGusta).Count()
+                                </div>
+                                <div>
+
+                                    @if (unaRespuesta.MiembroId != UsuarioId)
+                                    {
+                                        <a asp-controller="Reacciones" asp-action="Like" asp-route-respuestaId="@unaRespuesta.RespuestaId" asp-route-preguntaId="@unaRespuesta.PreguntaId"><i class="far fa-thumbs-up"></i></a>
+                                        <a asp-controller="Reacciones" asp-action="Dislike" asp-route-respuestaId="@unaRespuesta.RespuestaId" asp-route-preguntaId="@unaRespuesta.PreguntaId"><i class="far fa-thumbs-down"></i></a> }
+                                    else
+                                    {
+                                        <i class="far fa-thumbs-up"></i>
+                                        <i class="far fa-thumbs-down"></i>}
+                                </div>
+                            </div>
+                        </td>
+                        
+                        <td align="right">
+                            @if (!User.IsInRole("Usuario") && unaRespuesta.MiembroId == UsuarioId)
+                            {
+                                <a class=" btn btn-danger text-white" asp-controller="Respuestas" asp-action="Delete" asp-route-id="@unaRespuesta.RespuestaId">Eliminar</a>
+                                <a class=" btn btn-info text-white" asp-controller="Respuestas" asp-action="Edit" asp-route-id="@unaRespuesta.RespuestaId">Editar</a>
+                            }
+                        </td>
+
+                        <td>
+
+                    </tr>
+ }
+                else if (unaRespuesta.RespuestaId == respuestaMasLikes && unaRespuesta.Reacciones.Where(p => p.MeGusta).Count() != unaRespuesta.Reacciones.Where(p => !p.MeGusta).Count())
+                {
+                    <tr class="alert-success text-black-50">
+                        <td>
+                            @Html.DisplayFor(modelItem => unaRespuesta.Miembro.UserName)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => unaRespuesta.Fecha)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => unaRespuesta.Descripcion)
+                        </td>
+
+                        <td>
+                            <div class="reply liked">
+                                <div>
+                                    @unaRespuesta.Reacciones.Where(r => r.MeGusta).Count()
+                                    /
+                                    @unaRespuesta.Reacciones.Where(r => !r.MeGusta).Count()
+                                </div>
+
+                                <div>
+                                    @if (unaRespuesta.MiembroId != UsuarioId)
+                                    {
+                                        <a asp-controller="Reacciones" asp-action="Like" asp-route-respuestaId="@unaRespuesta.RespuestaId" asp-route-preguntaId="@unaRespuesta.PreguntaId"><i class="far fa-thumbs-up"></i></a>
+                                        <a asp-controller="Reacciones" asp-action="Dislike" asp-route-respuestaId="@unaRespuesta.RespuestaId" asp-route-preguntaId="@unaRespuesta.PreguntaId"><i class="far fa-thumbs-down"></i></a> }
+                                    else
+                                    {
+                                        <i class="far fa-thumbs-up"></i>
+                                        <i class="far fa-thumbs-down"></i>}
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                @if (!User.IsInRole("Usuario") && unaRespuesta.MiembroId == UsuarioId)
+                                {
+                                    <a class=" btn btn-danger text-white" asp-controller="Respuestas" asp-action="Delete" asp-route-id="@unaRespuesta.RespuestaId">Eliminar</a>
+                                    <a class=" btn btn-info text-white" asp-controller="Respuestas" asp-action="Edit" asp-route-id="@unaRespuesta.RespuestaId">Editar</a>
+                                }
+                            </div>
+                        <td>
+
+                    </tr>
+ }
+                else
+                {
+                    <tr class="">
+                        <td>
+                            @Html.DisplayFor(modelItem => unaRespuesta.Miembro.UserName)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => unaRespuesta.Fecha)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => unaRespuesta.Descripcion)
+                        </td>
+                        <td>
+                            <div class="reply liked">
+                                <div>
+                                    @unaRespuesta.Reacciones.Where(r => r.MeGusta).Count()
+                                    /
+                                    @unaRespuesta.Reacciones.Where(r => !r.MeGusta).Count()
+                                </div>
+
+                                <div>
+                                    @if (unaRespuesta.MiembroId != UsuarioId)
+                                    {
+                                        <a asp-controller="Reacciones" asp-action="Like" asp-route-respuestaId="@unaRespuesta.RespuestaId" asp-route-preguntaId="@unaRespuesta.PreguntaId"><i class="far fa-thumbs-up"></i></a>
+                                        <a asp-controller="Reacciones" asp-action="Dislike" asp-route-respuestaId="@unaRespuesta.RespuestaId" asp-route-preguntaId="@unaRespuesta.PreguntaId"><i class="far fa-thumbs-down"></i></a> }
+                                    else
+                                    {
+                                        <i class="far fa-thumbs-up"></i>
+                                        <i class="far fa-thumbs-down"></i>}
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                @if (!User.IsInRole("Usuario") && unaRespuesta.MiembroId == UsuarioId)
+                                {
+                                    <a class=" btn btn-danger text-white" asp-controller="Respuestas" asp-action="Delete" asp-route-id="@unaRespuesta.RespuestaId">Eliminar</a>
+                                    <a class=" btn btn-info text-white" asp-controller="Respuestas" asp-action="Edit" asp-route-id="@unaRespuesta.RespuestaId">Editar</a>}
+                            </div>
+                    </tr>
+           }
+
+            }
+        </tbody>
+    </table>
+    <p class="">Se encontraron: @Model.Count() Respuestas en esta Pregunta</p>
+</div>
