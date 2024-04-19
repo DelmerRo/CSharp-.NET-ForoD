@@ -14,7 +14,7 @@ namespace FORO_D.Helpers
         public const string NombreCompleto = "Nombre Completo";
         public const string FechaAlta = "Fecha de Alta";
         public const string UserName = "Usuario";
-        public const string Telefono = "Telefono";
+        public const string Telefono = "Teléfono";
         public const string Apellido = "Apellido";
         public const string Nombre = "Nombre";
         public const string Contraseña = "Contraseña";
@@ -27,7 +27,7 @@ namespace FORO_D.Helpers
         public const string EntradasAsoc = "Entradas Asociadas";
         public const string RolName = "Nombre";
         public const string PassConfirm = "Confirmar contraseña";
-        public const string TopCinco = "Top 5 Entradas con más Preguntas y Respuestas";
+        public const string TopCinco = "Top 5 Entradas  más Populares";
         public const string CincoRecientes = "Las 5 Entradas más Recientes";
         public const string TopTres = "Top 3 Miembros con más Entradas en el último Mes";
           

@@ -10,23 +10,23 @@ namespace FORO_D.Data
     {
         public static List<Entrada> GetEntradas()
         {
-            DateTime d1 = new (2022, 07, 02, 06, 52, 14);
-            DateTime d2 = new (2022, 07, 01, 07, 51, 16);
-            DateTime d3 = new (2022, 06, 28, 12, 50, 50);
-            DateTime d4 = new (2022, 07, 02, 18, 18, 18);
-            DateTime d5 = new (2022, 06, 17, 22, 59, 30);
-            DateTime d6 = new (2022, 07, 08, 14, 12, 44);
-            DateTime d7 = new (2021, 07, 07, 18, 50, 33);
-            DateTime d8 = new (2022, 03, 28, 03, 50, 50);
-            DateTime d9 = new (2022, 01, 30, 02, 50, 50);
-            DateTime d10 = new(2022, 02,12, 06, 52, 14);
-            DateTime d11 = new(2021, 02, 05, 07, 51, 16);
-            DateTime d12 = new(2021, 11, 15, 12, 50, 50);
-            DateTime d13 = new(2021, 02, 01, 06, 51, 10);
-            DateTime d14 = new(2022, 02, 20, 22, 59, 30);
-            DateTime d16= new(2022, 02, 02, 18, 50, 33);
-            DateTime d17= new(2022, 02, 23, 03, 50, 50);
-            DateTime d18= new(2022, 02, 02, 02, 50, 50);
+            DateTime d1 = new (2024, 04, 02, 06, 52, 14);
+            DateTime d2 = new (2024, 04, 01, 07, 51, 16);
+            DateTime d3 = new (2024, 03, 28, 12, 50, 50);
+            DateTime d4 = new (2024, 04, 02, 18, 18, 18);
+            DateTime d5 = new (2024, 04, 17, 22, 59, 30);
+            DateTime d6 = new (2024, 04, 08, 14, 12, 44);
+            DateTime d7 = new (2024, 04, 07, 18, 50, 33);
+            DateTime d8 = new (2024, 03, 28, 03, 50, 50);
+            DateTime d9 = new (2024, 03, 30, 02, 50, 50);
+            DateTime d10 = new(2024, 04,12, 06, 52, 14);
+            DateTime d11 = new(2024, 04, 05, 07, 51, 16);
+            DateTime d12 = new(2024, 04, 15, 12, 50, 50);
+            DateTime d13 = new(2024, 04, 01, 06, 51, 10);
+            DateTime d14 = new(2024, 03, 20, 22, 59, 30);
+            DateTime d16= new(2024, 04, 02, 18, 50, 33);
+            DateTime d17= new(2024, 03, 23, 03, 50, 50);
+            DateTime d18= new(2024, 04, 02, 02, 50, 50);
 
             Entrada ent1 = new() { Titulo = "Notebook", Descripcion = "Modelos 2022", Fecha = d1, Privada = false, CategoriaId = 1, MiembroId = 6 };
             Entrada ent2 = new() { Titulo = "Pelicula Drama", Descripcion = "Recomendacion y preguntas", Fecha = d2, Privada = true, CategoriaId = 3, MiembroId = 6 };
