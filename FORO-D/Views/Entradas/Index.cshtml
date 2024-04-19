@@ -1,8 +1,11 @@
 ﻿@model IEnumerable<FORO_D.Models.Entrada>
-
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Mvc.Routing
 @{
     ViewData["Title"] = "Entradas Creadas";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var utilities = new FORO_D.Helpers.Utilities(new HttpContextAccessor());
+    var urlHelper = Context.RequestServices.GetService(typeof(IUrlHelperFactory)) as IUrlHelperFactory;
 
     int UsuarioId = 0;
     if (User.Claims.Any())
@@ -37,59 +40,9 @@
 
             <tr>
                 <td>
-                    @if (User.IsInRole("Miembro"))
-                    {
-                        @if (!item.MiembrosHabibilitados.Any((am => am.MiembroId == UsuarioId && am.EntradaId == item.EntradaId)) && item.Privada && User.IsInRole("Miembro") && item.MiembroId != UsuarioId)
-                        {
-                            <p class="alert-info">Publicado por: @item.Miembro.NombreCompleto el: @item.Fecha <a class="btn btn-danger btn-sm m-1 text-white" asp-controller="MiembrosHabilitados" asp-action="Create" asp-route-entradaId="@item.EntradaId"> privado</a></p>
-                            <h2 class="post-title">@item.Titulo</h2>
-                            <p> @item.Descripcion</p>
-                        }
-                        else if (item.MiembrosHabibilitados.Any((am => am.MiembroId == UsuarioId && am.EntradaId == item.EntradaId && !am.Habilitado)) && item.Privada && User.IsInRole("Miembro") && item.MiembroId != UsuarioId)
-                        {
-                            <p class="alert-info">Publicado por: @item.Miembro.NombreCompleto el: @item.Fecha <span><a class="btn btn-warning btn-sm m-1 text-white">privado: Autorización pendiente</a></span></p>
-                            <h2 class="post-title">@item.Titulo</h2>
-                            <p> @item.Descripcion</p>
-                        }
-                        else if (item.MiembrosHabibilitados.Any((am => am.MiembroId == UsuarioId && am.EntradaId == item.EntradaId && am.Habilitado)) && item.Privada && User.IsInRole("Miembro") && item.MiembroId != UsuarioId)
-                        {
-                            <p class="alert-info">Publicado por: @item.Miembro.NombreCompleto el: @item.Fecha <span><a class="btn btn-success btn-sm m-1 text-white"> privado: autorizado</a></span></p>
-                            <a asp-controller="Entradas" asp-action="Details" asp-route-id="@item.EntradaId"><h2 class="post-title">@item.Titulo</h2></a>
-                            <p> @item.Descripcion</p>
-                        }
-                        else if (User.IsInRole("Miembro") && item.MiembroId == UsuarioId)
-                        {
-                            <p class="alert-info">Publicado por: @item.Miembro.NombreCompleto el: @item.Fecha <span><a class="btn btn-info btn-sm m-1 text-white">  Mis entradas</a></span></p>
-                            <a asp-controller="Entradas" asp-action="Details" asp-route-id="@item.EntradaId"><h2 class="post-title">@item.Titulo</h2></a>
-                            <p> @item.Descripcion</p>
-                        }
-                        else //if(User.IsInRole("Miembro") && item.MiembroId != UsuarioId && !item.Privada)
-                        {
-                            if ((User.IsInRole("Miembro") && item.MiembroId != UsuarioId && !item.Privada))
-                            {
-                                <p class="alert-info">Publicado por: @item.Miembro.NombreCompleto el: @item.Fecha</p>
-                                <a asp-controller="Entradas" asp-action="Details" asp-route-id="@item.EntradaId"><h2 class="post-title">@item.Titulo</h2></a>
-                                <p> @item.Descripcion</p>
-                            }
-
-                        } }
-                    else
-                    {
-                        if (!item.Privada)
-                        {
-                            <p class="alert-info">Publicado por: @item.Miembro.NombreCompleto el: @item.Fecha</p>
-                            <a asp-controller="Entradas" asp-action="Details" asp-route-id="@item.EntradaId"><h2 class="post-title">@item.Titulo</h2></a>
-                            <p> @item.Descripcion</p>
-                        }
-                        else
-                        {
-                            <p class="alert-info">Publicado por: @item.Miembro.NombreCompleto el: @item.Fecha <a class="btn btn-danger btn-sm m-1 text-white"> (privado)</a></p>
-                            <a asp-controller="Entradas" asp-action="Details" asp-route-id="@item.EntradaId"><h2 class="post-title">@item.Titulo</h2></a>
-                            <p> @item.Descripcion</p>
-                        }
-
-                    }
-
+                    <div class="card mb-3">
+                        @Html.Raw(utilities.RenderizarEntrada(item, UsuarioId, "Entradas", "Details", urlHelper.GetUrlHelper(ViewContext)))
+                    </div>
 
                 </td>
             </tr>
