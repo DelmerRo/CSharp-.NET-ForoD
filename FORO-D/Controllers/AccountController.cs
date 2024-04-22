@@ -38,7 +38,7 @@ namespace FORO_D.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Miembro")]
+        
         [HttpPost]
         public async Task<ActionResult> Registrar(RegistracionViewModel viewModel)
         {

@@ -17,7 +17,7 @@
                     @foreach (Entrada item in Model.Top5EntradasConMasPreguntaYRespuestas)
                     {
                         <div class="card mb-3">
-                            @Html.Raw(utilities.RenderizarEntrada(item, Model.SesionUserId, "Entradas", "Details", urlHelper.GetUrlHelper(ViewContext)))
+                            @Html.Raw(utilities.RenderizarEntrada(item, Model.SesionUserId, urlHelper.GetUrlHelper(ViewContext)))
                         </div>
                     }
                 </div>
@@ -34,7 +34,7 @@
                     @foreach (Entrada item in Model.Top5EntradasMasRecientes)
                     {
                         <div class="card mb-3">
-                            @Html.Raw(utilities.RenderizarEntrada(item, Model.SesionUserId, "Entradas", "Details", urlHelper.GetUrlHelper(ViewContext)))
+                            @Html.Raw(utilities.RenderizarEntrada(item, Model.SesionUserId, urlHelper.GetUrlHelper(ViewContext)))
                         </div>
                     }
                 </div>
