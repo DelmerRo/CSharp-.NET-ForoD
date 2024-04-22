@@ -44,8 +44,8 @@ namespace FORO_D.Controllers
         {
 
             if (ModelState.IsValid)
-            {   
-                Miembro miembroACrear = new ();
+            {
+                Miembro miembroACrear = new();
                 miembroACrear.Nombre = viewModel.Nombre;
                 miembroACrear.Apellido = viewModel.Apellido;
                 miembroACrear.UserName = viewModel.UserName;
