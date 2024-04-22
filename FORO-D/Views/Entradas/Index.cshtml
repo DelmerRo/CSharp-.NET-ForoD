@@ -6,7 +6,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     var utilities = new FORO_D.Helpers.Utilities(new HttpContextAccessor());
     var urlHelper = Context.RequestServices.GetService(typeof(IUrlHelperFactory)) as IUrlHelperFactory;
-
     int UsuarioId = 0;
     if (User.Claims.Any())
     {
@@ -26,26 +25,15 @@
 
 <table class="table">
     <thead class="alert-secondary text-black-50">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Titulo)
-            </th>
-
-        </tr>
     </thead>
     <tbody>
 
         @foreach (var item in Model)
         {
 
-            <tr>
-                <td>
-                    <div class="card mb-3">
-                        @Html.Raw(utilities.RenderizarEntrada(item, UsuarioId, "Entradas", "Details", urlHelper.GetUrlHelper(ViewContext)))
-                    </div>
-
-                </td>
-            </tr>
+            <div class="card mb-3">
+                @Html.Raw(utilities.RenderizarEntrada(item, UsuarioId, urlHelper.GetUrlHelper(ViewContext)))
+            </div>
         }
     </tbody>
 </table>
