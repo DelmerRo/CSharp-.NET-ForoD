@@ -18,8 +18,8 @@ namespace FORO_D.Helpers
 
         public string RenderizarEntrada(Entrada item, int userId, IUrlHelper urlHelper)
         {
-            var urlEntradaDetails = urlHelper.Action("Details", "Entrada", new { id = item.EntradaId });
-            var urlMhCreate = urlHelper.Action("Create", "MiembrosHabilitados", new { id = item.EntradaId });
+            var urlEntradaDetails = urlHelper.Action("Details", "Entradas", new { entradaID = item.EntradaId });
+            var urlMhCreate = urlHelper.Action("Create", "MiembrosHabilitados", new { entradaId = item.EntradaId });
             var renderizado = "";
 
             if (_httpContextAccessor.HttpContext.User.IsInRole("Miembro"))

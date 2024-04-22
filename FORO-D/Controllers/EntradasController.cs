@@ -57,15 +57,15 @@ namespace FORO_D.Controllers
 
         //[Authorize(Roles = "Miembro,Usuario")]
         // GET: Entradas/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? entradaId)
         {
-            Entrada laEntrada = _context.Entradas.FirstOrDefault(p => p.EntradaId == id);
+            Entrada laEntrada = _context.Entradas.FirstOrDefault(p => p.EntradaId == entradaId);
             if (_signinManager.IsSignedIn(User))
             {
                 int miID = Int32.Parse(User.Claims.First().Value);
-                var estaPendienteDeAutorizacion = _context.MiembrosHabilitados.Any((mh => mh.MiembroId == miID && mh.EntradaId == id && !mh.Habilitado));
-                var hayRegistro = _context.MiembrosHabilitados.Any(mh => mh.EntradaId == id && mh.MiembroId == miID && mh.Habilitado);
-                if (User.IsInRole("Miembro") && (id == null || estaPendienteDeAutorizacion || (laEntrada.MiembroId != miID && !hayRegistro && laEntrada.Privada)))
+                var estaPendienteDeAutorizacion = _context.MiembrosHabilitados.Any((mh => mh.MiembroId == miID && mh.EntradaId == entradaId && !mh.Habilitado));
+                var hayRegistro = _context.MiembrosHabilitados.Any(mh => mh.EntradaId == entradaId && mh.MiembroId == miID && mh.Habilitado);
+                if (User.IsInRole("Miembro") && (entradaId == null || estaPendienteDeAutorizacion || (laEntrada.MiembroId != miID && !hayRegistro && laEntrada.Privada)))
                 {
                     return NotFound();
                 }
@@ -82,14 +82,14 @@ namespace FORO_D.Controllers
                 .Include(e => e.Preguntas)
                 .ThenInclude(e => e.Respuestas)
                 .OrderBy(p => p.Fecha)
-                .FirstOrDefaultAsync(m => m.EntradaId == id);
+                .FirstOrDefaultAsync(m => m.EntradaId == entradaId);
 
             List<Pregunta> listaDePreguntas = new();
             listaDePreguntas = await _context.Preguntas
               .Include(e => e.Miembro)
               .Include(e => e.Entrada)
               .OrderBy(p => p.Fecha)
-              .Where(m => m.EntradaId == id).ToListAsync();
+              .Where(m => m.EntradaId == entradaId).ToListAsync();
 
             if (entrada == null || listaDePreguntas == null)
             {
