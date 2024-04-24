@@ -5,147 +5,282 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
     <title>@ViewData["Title"] - Foro-D</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+
+    <!-- Custom fonts for this template-->
+    <link href="~/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+          rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="~/css/sb-admin-2.min.css" rel="stylesheet">
+
 </head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container">
-                <div class="navbar-header">
-                    <div class="navbar-header pull-left">
-                        <a class="navbar-brand" href="@Url.Action("Index", "Home")">
-                            <img src="~/Imagen/logo2.png" alt="Site Logo" style="height:50px; width: 50px" />
-                        </a>
+<body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" asp-area="" asp-controller="Home" asp-action="Index">
+                <div class="sidebar-brand-icon rotate-n-15">
+                    <i class="fas fa-laugh-wink"></i>
+                </div>
+                <div class="sidebar-brand-text mx-3">SB ADMIN <sup>2</sup></div>
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">
+                    <i class="fas fa-fw fa-home"></i>
+                    <span>Home</span>
+                </a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Información
+            </div>
+
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Privacidad</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="InformacionInstitucional">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Información institucional</span>
+                </a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Funcionalidades
+            </div>
+
+            <!-- Nav Item - Charts -->
+            <li class="nav-item">
+                <a class="nav-link" asp-area="" asp-controller="Miembros" asp-action="Index">
+                    <i class="fas fa-bell"></i>
+                    <span>Miembros</span>
+                </a>
+            </li>
+
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
+                   aria-expanded="true" aria-controls="collapsePages">
+                    <i class="fas fa-scroll"></i>
+                    <span>Publicaciones</span>
+                </a>
+                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Gestion de Entradas:</h6>
+                        <a class="collapse-item" asp-area="" asp-controller="Entradas" asp-action="Index">Toda las Entradas</a>
+                        <a class="collapse-item" asp-area="" asp-controller="Entradas" asp-action="MisEntradas">Mis entradas</a>
                     </div>
                 </div>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
-                        @if (singInManager.IsSignedIn(User))
-                        {
-                            if (User.IsInRole("Miembro"))
-                            {
-                                <li class="btn btn-outline-secondary btn-light m-1">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                                </li>
-                                <li class="btn btn-outline-secondary btn-light m-1">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                                </li>
-                                <li class="btn btn-outline-secondary btn-light m-1">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="InformacionInstitucional"> Información institucional</a>
-                                </li>
-                                <li class="btn btn-outline-secondary btn-light m-1">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Miembros" asp-action="Index">Miembros</a>
-                                </li>
+            </li>
 
-                                <li class="btn btn-outline-secondary btn-light m-1">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Entradas" asp-action="Index">Entradas</a>
-                                </li>
+            <!-- Nav Item - Charts -->
+            <li class="nav-item">
+                <a class="nav-link" asp-area="" asp-controller="Entradas" asp-action="SolicitudesPendientes">
+                    <i class="fas fa-bell"></i>
+                    <span>Notificaciones</span>
+                </a>
+            </li>
 
-                                <li class="btn btn-outline-secondary btn-light m-1">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Entradas" asp-action="MisEntradas">Mis Entradas</a>
-                                </li>
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
 
-                                <li class="btn btn-outline-secondary btn-light m-1">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Entradas" asp-action="SolicitudesPendientes">Solicitudes Pendientes</a>
-                                </li>
+        </ul>
+        <!-- End of Sidebar -->
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
 
-                                <li class="btn btn-outline-secondary btn-light m-1">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Categorias" asp-action="Details" asp-route-id="null">Categorías</a>
-                                </li>
-                             
-                            }
-                            else if (User.IsInRole("Usuario"))
-                            {
-                                <li class="btn btn-outline-secondary btn-light m-1">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Miembros" asp-action="Index">Miembros</a>
-                                </li>
-                                <li class="btn btn-outline-secondary btn-light m-1">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Usuarios" asp-action="Index">Usuarios</a>
-                                </li>
-                                <li class="btn btn-outline-secondary btn-light m-1">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Entradas" asp-action="Index">Entradas</a>
-                                </li>
-                                <li class="btn btn-outline-secondary btn-light m-1">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Categorias" asp-action="Index">Cantidad De Entradas Por Categoría</a>
-                                </li>
-                                <li class="btn btn-outline-secondary btn-light m-1">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Categorias" asp-action="Details" asp-route-id="null">Categorías</a>
-                                </li>
-                                <li class="btn btn-outline-secondary btn-light m-1">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="CrearAdministrador">Crear Administrador</a>
-                                </li>
-                            }
+            <!-- Main Content -->
+            <div id="content">
 
-                            <li>
-                                <a class="btn btn-danger btn-sm text-white m-1" asp-area="" asp-controller="Account" asp-action="CerrarSesion">Cerrar sesion</a>
-                            </li>
-                        }
-                        else
-                        {
-                            <!-- Dropdown de Categorías -->
-                            <ul class="navbar-nav mr-auto">
-                                <li class="nav-item dropdown">
-                                    <a class="btn btn-outline-secondary btn-light dropdown-toggle m-1" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Categorías
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        @{
-                                            var categorias = await _context.Categorias.ToListAsync();
-                                        }
-                                        @foreach (var categoria in categorias)
-                                        {
-                                            <a class="dropdown-item" asp-controller="Categorias" asp-action="Details" asp-route-id="@categoria.CategoriaId">@categoria.Nombre</a>
-                                        }
-                                    </div>
-                                </li>
-                            </ul>
-                            <ul class="navbar-nav ml-auto">
-                                <!-- Botones de Registrar e Iniciar sesión -->
-                                <li class="nav-item">
-                                    <a class="btn btn-primary btn-sm m-1" asp-area="" asp-controller="Account" asp-action="Registrar">Registrar</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="btn btn-success btn-sm text-white m-1" asp-area="" asp-controller="Account" asp-action="IniciarSesion">Iniciar sesión</a>
-                                </li>
-                            </ul>
-                          
-                        }
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+                    <!-- Menú de categorías -->
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item dropdown">
+                            <a class="btn btn-outline-secondary btn-light dropdown-toggle m-1" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Categorías
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                @{
+                                    var categorias = await _context.Categorias.ToListAsync();
+                                }
+                                @foreach (var categoria in categorias)
+                                {
+                                    <a class="dropdown-item" asp-controller="Categorias" asp-action="Details" asp-route-id="@categoria.CategoriaId">@categoria.Nombre</a>
+                                }
+                            </div>
+                        </li>
                     </ul>
 
 
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+
+                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+                        <li class="nav-item dropdown no-arrow d-sm-none">
+                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-search fa-fw"></i>
+                            </a>
+                            <!-- Dropdown - Messages -->
+                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+                                 aria-labelledby="searchDropdown">
+                                <form class="form-inline mr-auto w-100 navbar-search">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control bg-light border-0 small"
+                                               placeholder="Search for..." aria-label="Search"
+                                               aria-describedby="basic-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button">
+                                                <i class="fas fa-search fa-sm"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+
+                        <!-- Nav Item - Alerts -->
+                        <li class="nav-item dropdown no-arrow mx-1">
+                            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-bell fa-fw"></i>
+                                <!-- Counter - Alerts -->
+                                <span class="badge badge-danger badge-counter">3+</span>
+                            </a>
+                            <!-- Dropdown - Alerts -->
+                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                 aria-labelledby="alertsDropdown">
+                                <h6 class="dropdown-header">
+                                    Alerts Center
+                                </h6>
+                                <!-- ... -->
+                            </div>
+                        </li>
+
+                        <!-- Nav Item - Messages -->
+                        <li class="nav-item dropdown no-arrow mx-1">
+                            <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-envelope fa-fw"></i>
+                                <!-- Counter - Messages -->
+                                <span class="badge badge-danger badge-counter">7</span>
+                            </a>
+                            <!-- Dropdown - Messages -->
+                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                 aria-labelledby="messagesDropdown">
+                                <!-- ... -->
+                            </div>
+                        </li>
+
+                        <div class="topbar-divider d-none d-sm-block"></div>
+
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                                <img class="img-profile rounded-circle"
+                                     src="img/undraw_profile.svg">
+                            </a>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                 aria-labelledby="userDropdown">
+                                <!-- ... -->
+                            </div>
+                        </li>
+
+                    </ul>
+
+                </nav>
+                <!-- End of Topbar -->
+                <!--**** Begin Page Content***** -->
+                <div class="container-fluid">
+
+                    @RenderBody()
+                    <!-- End of Main Content -->
+                    <!-- Footer -->
+                    <footer class="sticky-footer bg-white">
+                        <div class="container my-auto">
+                            <div class="copyright text-center my-auto">
+                                <span>Copyright &copy; Your Website 2021</span>
+                            </div>
+                        </div>
+                    </footer>
+                    <!-- End of Footer -->
+
                 </div>
+                <!-- End of Content Wrapper -->
+
             </div>
-            @if (singInManager.IsSignedIn(User))
-            {
-                <span id="nav-welcome">Bienvenido <b>@User.Identity.Name</b></span> if (User.IsInRole("Miembro"))
-                                {
-                <a class="nav-link text-primary font-weight-bold" asp-area="" asp-controller="Miembros" asp-action="Edit" asp-route-id=@Int32.Parse(User.Claims.First().Value)> -  Mi Perfil</a> }
-                                else if (User.IsInRole("Usuario"))
-                                {
-                <a class="nav-link text-primary font-weight-bold" asp-area="" asp-controller="Usuarios" asp-action="Edit" asp-route-id=@Int32.Parse(User.Claims.First().Value)> -  Mi Perfil</a>}
-             }
-        </nav>
-    </header>
+            <!-- End of Page Wrapper -->
+            <!-- Scroll to Top Button-->
+            <a class="scroll-to-top rounded" href="#page-top">
+                <i class="fas fa-angle-up"></i>
+            </a>
 
-    <div class="container">
-        <main role="main" class="pb-3" >
-            @RenderBody()
-        </main>
-    </div>
+            <!-- Logout Modal-->
+            <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <!-- ... -->
+            </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2021 - FORO_D - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @RenderSection("Scripts", required: false)
+            <!-- Bootstrap core JavaScript-->
+            <script src="~/vendor/jquery/jquery.min.js"></script>
+            <script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+            <!-- Core plugin JavaScript-->
+            <script src="~/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+            <!-- Custom scripts for all pages-->
+            <script src="~/js/sb-admin-2.min.js"></script>
+
+            <!-- Page level plugins -->
+            <script src="~/vendor/chart.js/Chart.min.js"></script>
+
+            <!-- Page level custom scripts -->
+            <script src="~/js/demo/chart-area-demo.js"></script>
+            <script src="~/js/demo/chart-pie-demo.js"></script>
+            <script src="~/js/demo/chart-bar-demo.js"></script>
+            @RenderSection("Scripts", required: false)
+
+
+
 </body>
 </html>

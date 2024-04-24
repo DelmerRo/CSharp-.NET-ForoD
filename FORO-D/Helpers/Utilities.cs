@@ -18,7 +18,7 @@ namespace FORO_D.Helpers
 
         public string RenderizarEntrada(Entrada item, int userId, IUrlHelper urlHelper)
         {
-            var urlEntradaDetails = urlHelper.Action("Details", "Entradas", new { entradaID = item.EntradaId });
+            var urlEntradaDetails = urlHelper.Action("Details", "Entradas", new { entradaId = item.EntradaId });
             var urlMhCreate = urlHelper.Action("Create", "MiembrosHabilitados", new { entradaId = item.EntradaId });
             var renderizado = "";
 
