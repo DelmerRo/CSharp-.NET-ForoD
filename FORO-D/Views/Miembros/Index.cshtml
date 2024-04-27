@@ -1,77 +1,62 @@
 ﻿@model IEnumerable<Miembro>
 
-@{ ViewData["Title"] = "Index";
+@{
+    ViewData["Title"] = "Lista De Miembros";
 
-                int UsuarioId = 0;
-                if (!string.IsNullOrEmpty(User.Claims.First().Value))
-                {
-                    UsuarioId = Int32.Parse(User.Claims.First().Value);
-                }
-                }
-<h1 class="btn-primary text-center text-white">Lista De Miembros</h1>
-
-<table class="table">
-    <thead class="alert-secondary text-black-50">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.UserName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Nombre)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Apellido)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Telefono)
-            </th>
-            <th hidden="hidden">
-                @Html.DisplayNameFor(model => model.FechaAlta)
-            </th>
-
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (Miembro miembro in Model)
-        {
-<tr>
-    <td>
-        @Html.DisplayFor(modelItem => miembro.UserName)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => miembro.Nombre)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => miembro.Apellido)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => miembro.Email)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => miembro.Telefono)
-    </td>
-    <td hidden="hidden">
-        @Html.DisplayFor(modelItem => miembro.FechaAlta)
-    </td>
-    <td>
-        @if (User.IsInRole("Usuario"))
-        {
-                    <a asp-action="Details" asp-route-id="@miembro.Id">Detalles</a>
-                                      
-                                       }
-                                                        else if (User.IsInRole("Miembro") && miembro.Id == UsuarioId)
-                                                        {
-                                        <a asp-action="Details" asp-route-id="@miembro.Id">Detalles</a>
-                                                            <a asp-action="Edit" asp-route-id="@miembro.Id">Editar</a> }
-                                                                            else if (User.IsInRole("Miembro"))
-                                                                            {
-                                                            <a asp-action="Details" asp-route-id="@miembro.Id">Detalles</a>                }
-
-    </td>
-</tr>}
-    </tbody>
-</table>
+    int UsuarioId = 0;
+    if (!string.IsNullOrEmpty(User.Claims.First().Value))
+    {
+        UsuarioId = Int32.Parse(User.Claims.First().Value);
+    }
+}
+<div class="card col-md-12 p-3">
+    <div class="card">
+    <h1 class="btn-primary text-center text-white">@ViewData["Title"]</h1>
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Email</th>
+                        <th>Teléfono</th>
+                        @if (User.IsInRole("Usuario") || User.IsInRole("Miembro"))
+                        {
+                            <th>Acciones</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var miembro in Model)
+                    {
+                        <tr>
+                            <td>@miembro.UserName</td>
+                            <td>@miembro.Nombre</td>
+                            <td>@miembro.Apellido</td>
+                            <td>@miembro.Email</td>
+                            <td>@miembro.Telefono</td>
+                            @if (User.IsInRole("Usuario") || User.IsInRole("Miembro"))
+                            {
+                                <td>
+                                    @if (User.IsInRole("Usuario") || (User.IsInRole("Miembro") && miembro.Id == UsuarioId))
+                                    {
+                                        <a class="btn btn-info btn-sm" asp-action="Details" asp-route-id="@miembro.Id">
+                                            <i class="fas fa-info-circle"></i> Detalles
+                                        </a>
+                                    }
+                                    @if (User.IsInRole("Miembro") && miembro.Id == UsuarioId)
+                                    {
+                                        <a class="btn btn-primary btn-sm" asp-action="Edit" asp-route-id="@miembro.Id">
+                                            <i class="fas fa-edit"></i> Editar
+                                        </a>
+                                    }
+                                </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
