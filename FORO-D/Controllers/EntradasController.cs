@@ -193,7 +193,7 @@ namespace FORO_D.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Details", "Entradas", new { id = entrada.EntradaId });
+                return RedirectToAction("Details", "Entradas", new { entradaId = entrada.EntradaId });
             }
             ViewData["CategoriaId"] = new SelectList(_context.Categorias, "CategoriaId", "Nombre", entrada.CategoriaId);
             ViewData["MiembroId"] = new SelectList(_context.Miembros, "Id", "Apellido", entrada.MiembroId);

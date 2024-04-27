@@ -1,42 +1,38 @@
 ﻿@model IEnumerable<FORO_D.Models.Entrada>
 @using Microsoft.AspNetCore.Http
 @using Microsoft.AspNetCore.Mvc.Routing
-@{ 
+@{
     ViewData["Title"] = "Entradas Creadas";
-    var listaDeCategorias = ViewBag.Categorias;
+    var nombreCategoria = ViewBag.Categorias;
     int UsuarioId = 0;
     var utilities = new FORO_D.Helpers.Utilities(new HttpContextAccessor());
     var urlHelper = Context.RequestServices.GetService(typeof(IUrlHelperFactory)) as IUrlHelperFactory;
     if (User.Claims.Any())
     {
         UsuarioId = Int32.Parse(User.Claims.First().Value);
-    } }
-<h1 class="btn-primary text-center text-white">Entradas</h1>
-<a class=" btn btn-success text-white" asp-action="Create">Crear Nueva Categoría</a>
-<div class="category-bar">
-    <a class="btn btn-info btn-sm m-1 text-white" asp-action="Details" asp-route-id="null">Todas Las Categorias</a>
-    @foreach (var unaCategoria in listaDeCategorias)
-    {
-
-        if (unaCategoria != null)
-        {
-<a class="btn btn-info btn-sm m-1 text-white" asp-controller="Categorias" asp-action="Details" asp-route-id="@unaCategoria.CategoriaId">@unaCategoria.Nombre</a>}
+    }
 }
 
+<a class=" btn btn-success text-white" asp-action="Create">Crear Nueva Categoría</a>
+
+<div class="card col-md-12 mt-3 p-3">
+    <div class="card">
+        <div class="p-3 mb-2 bg-primary text-white">
+            <h3 class="text-center text-white">Entradas de @nombreCategoria</h3>
+        </div>
+        <div class="row">
+
+            @foreach (var item in Model)
+            {
+                <div class="col-md-6 mb-4">
+                    <div class="card mb-3">
+                        @Html.Raw(utilities.RenderizarEntrada(item, UsuarioId, urlHelper.GetUrlHelper(ViewContext)))
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="card-footer">
+            <p class="text-muted">Se encontraron: @Model.Count() Entradas en esta categoría</p>
+        </div>
+    </div>
 </div>
-
-<table class="table">
-    <thead class="alert-secondary text-black-50">
-    </thead>
-    <tbody>
-
-        @foreach (var item in Model)
-        {
-
-            <div class="card mb-3">
-                @Html.Raw(utilities.RenderizarEntrada(item, UsuarioId, urlHelper.GetUrlHelper(ViewContext)))
-            </div>
-        }
-    </tbody>
-</table>
-<p class="">Se encontraron: @Model.Count() Entradas en esta categoría</p>

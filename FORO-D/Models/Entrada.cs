@@ -24,20 +24,24 @@ namespace FORO_D.Models{
         [StringLength(Restrictions.MaxTituloEntrada, MinimumLength = Restrictions.MinTituloEntrada, ErrorMessage = ErrMsgs.StrMaxMin)]
         public string Titulo { get; set; }
 
+        [Display(Name = Alias.Descripción)]
         [Required(ErrorMessage = ErrorMsg.ErrMsgRequired)]
         [StringLength(Restrictions.MaxDescEntrada, MinimumLength = Restrictions.MinDescEntrada, ErrorMessage = ErrMsgs.StrMaxMin)]
         [DataType(DataType.MultilineText)]
         public string Descripcion { get; set; }
 
-        [Display(Name = Alias.FechaDePublicacion)]
+        [Display(Name = Alias.Fecha)]
         [DataType(DataType.DateTime, ErrorMessage = ErrorMsg.ErrMsgNotValid)]
         public DateTime Fecha { get; set; } = DateTime.Now;
 
+        [Display(Name = Alias.Estado)]
         public Boolean Privada { get; set; } = false;
 
         public Miembro Miembro { get; set; }
 
+        [Display(Name = Alias.Categoria)]
         public Categoria Categoria { get; set; }
+
         public List<MiembrosHabilitados> MiembrosHabibilitados { get; set; }
 
         public List<Pregunta> Preguntas { get; set; }
