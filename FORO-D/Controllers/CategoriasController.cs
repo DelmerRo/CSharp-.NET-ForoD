@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace FORO_D.Controllers
 {
-  
+
     public class CategoriasController : Controller
     {
         private readonly ForoContext _context;
@@ -28,19 +28,22 @@ namespace FORO_D.Controllers
         public IActionResult Index()
         {
             var listaDeCategorias = _context.Categorias.
-                Include (c => c.Entradas).
+                Include(c => c.Entradas).
                 OrderBy(c => c.Nombre).ToList();
             return View(listaDeCategorias);
         }
 
-        
+
         public async Task<IActionResult> Details(int? id)
         {
-            if (id!=null) { 
-            Entrada laEntrada = _context.Entradas.FirstOrDefault(p => p.EntradaId == id);
+            Categoria cat = new() { };
+            if (id != null)
+            {
+                Entrada laEntrada = await _context.Entradas.FirstOrDefaultAsync(p => p.EntradaId == id);
+                cat = await _context.Categorias.FirstOrDefaultAsync(p => p.CategoriaId == id);
             }
 
-            List<Entrada> listaDeEntradas = new ();
+            List<Entrada> listaDeEntradas = new();
             if (id == null)
             {
                 listaDeEntradas = _context.Entradas.
@@ -61,12 +64,7 @@ namespace FORO_D.Controllers
                    ToList();
             }
 
-            var listaDeCategorias = await _context.Categorias.
-                 OrderBy(c => c.Nombre).
-                 ToListAsync();
-
-
-            ViewBag.Categorias = listaDeCategorias;
+            ViewBag.Categorias = cat.Nombre;
             return View(listaDeEntradas);
         }
 
@@ -104,11 +102,11 @@ namespace FORO_D.Controllers
             {
                 return RedirectToAction("Index", "Categorias");
             }
-            
+
             if (ModelState.IsValid)
             {
-                    _context.Add(categoria);
-                    await _context.SaveChangesAsync();
+                _context.Add(categoria);
+                await _context.SaveChangesAsync();
                 if (User.IsInRole("Miembro"))
                 {
                     return RedirectToAction("Create", "Entradas", new { id = categoria.CategoriaId });
@@ -116,9 +114,9 @@ namespace FORO_D.Controllers
                 else
                 {
                     return RedirectToAction("Index", "Categorias");
-                }  
+                }
             }
-            
+
             return View(categoria);
         }
     }

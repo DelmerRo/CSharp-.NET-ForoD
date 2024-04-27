@@ -12,29 +12,29 @@
         UsuarioId = Int32.Parse(User.Claims.First().Value);
     }
 }
-
-<h1 class="btn-primary text-center text-white">Entradas</h1>
-
 <p>
     @if (User.IsInRole("Miembro"))
     {
         <a class=" btn btn-success text-white" asp-action="Create">Crear Nueva Entrada</a>
     }
 </p>
-
-
-<table class="table">
-    <thead class="alert-secondary text-black-50">
-    </thead>
-    <tbody>
-
+<div class="card col-md-12 mt-3 p-3">
+    <div class="card">
+    <div class="p-3 mb-2 bg-primary text-white">
+        <h3 class="text-center text-white">Entradas</h3>
+    </div>
+    <div class="row">
         @foreach (var item in Model)
         {
-
-            <div class="card mb-3">
-                @Html.Raw(utilities.RenderizarEntrada(item, UsuarioId, urlHelper.GetUrlHelper(ViewContext)))
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                            @Html.Raw(utilities.RenderizarEntrada(item, UsuarioId, urlHelper.GetUrlHelper(ViewContext)))
+                </div>
             </div>
         }
-    </tbody>
-</table>
-<p class="">Se encontraron: @Model.Count() Entradas en esta categoría</p>
+    </div>
+    <div class="card-footer">
+        <p class="text-muted">Se encontraron: @Model.Count() Entradas en esta categoría</p>
+    </div>
+    </div>
+</div>

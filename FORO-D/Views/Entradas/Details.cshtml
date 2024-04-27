@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<FORO_D.Models.Pregunta>
 
-@{ ViewData["Title"] = "Details";
+@{
+    ViewData["Title"] = "Details";
     int UsuarioId = 0;
     Entrada entrada = ViewBag.Entrada;
 
@@ -8,127 +9,119 @@
     {
         UsuarioId = Int32.Parse(User.Claims.First().Value);
     }
-    
 }
 
-<h1 class="btn-primary text-center text-white"> @Html.DisplayNameFor(model => model.Entrada)</h1>
+<div class="card col-md-12 p-3">
+    <div class="card">
+        <div class="p-3 mb-2 bg-primary text-white">
+            <h3 class="text-center text-white">@Html.DisplayNameFor(model => model.Entrada)</h3>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(entrada => entrada.Entrada.Titulo):
+                </dt>
+                <dd class="col-sm-9">
+                    @entrada.Titulo
+                </dd>
 
-<div>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(entrada => entrada.Entrada.Titulo)
-        </dt>
-        <dd class="col-sm-10">
-            @entrada.Titulo
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(entrada => entrada.Entrada.Descripcion)
-        </dt>
-        <dd class="col-sm-10">
-            @entrada.Descripcion
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(entrada => entrada.Entrada.Fecha)
-        </dt>
-        <dd class="col-sm-10">
-            @entrada.Fecha
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(entrada => entrada.Entrada.Privada)
-        </dt>
-        <dd class="col-sm-10">
-            @if (entrada.Privada)
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(entrada => entrada.Entrada.Descripcion):
+                </dt>
+                <dd class="col-sm-9">
+                    @entrada.Descripcion
+                </dd>
+
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(entrada => entrada.Entrada.Fecha):
+                </dt>
+                <dd class="col-sm-9">
+                    @entrada.Fecha
+                </dd>
+
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(entrada => entrada.Entrada.Privada):
+                </dt>
+                <dd class="col-sm-9">
+                    @if (entrada.Privada)
+                    {
+                        <i class="fas fa-times-circle text-danger"></i> <!-- Icono de checkmark -->
+                        <span class="text-danger">Privada</span>
+                    }
+                    else
+                    {
+                        <i class="fas fa-check-circle text-success"></i> <!-- Icono de cruz -->
+                        <span class="text-success">Pública</span>
+                    }
+                </dd>
+
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(entrada => entrada.Entrada.Miembro.Nombre):
+                </dt>
+                <dd class="col-sm-9">
+                    @entrada.Miembro.NombreCompleto
+                </dd>
+
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(entrada => entrada.Entrada.Categoria.Nombre):
+                </dt>
+                <dd class="col-sm-9">
+                    @entrada.Categoria.Nombre
+                </dd>
+            </dl>
+
+            <div class="d-flex justify-content-end">
+                @if (User.IsInRole("Miembro") || UsuarioId == 0)
                 {
-                    <p>Si</p>                            }
-                else
-                {
-        <p>No</p>
-                              }                              
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(entrada => entrada.Entrada.Miembro.NombreCompleto)
-        </dt>
-        <dd class="col-sm-10">
-            @entrada.Miembro.NombreCompleto
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(entrada => entrada.Entrada.Categoria.Nombre)
-        </dt>
-        <dd class="col-sm-10">
-            @entrada.Categoria.Nombre
-        </dd>
-    </dl>
-    @if (User.IsInRole("Miembro"))
-    {
-        <a class=" btn btn-success text-white" asp-controller="Preguntas" asp-action="Create" asp-route-id=@entrada.EntradaId>Agregar Pregunta</a>
-    }
-    else if (UsuarioId == 0)
-    {
-        <a class=" btn btn-success text-white" asp-controller="Preguntas" asp-action="Create" asp-route-id=@entrada.EntradaId>Agregar Pregunta</a>
-    }
-    <div align="right">
-        @if (User.IsInRole("Miembro") && entrada.MiembroId == UsuarioId)
-        {
-            <a class=" btn btn-primary" asp-action="Edit" asp-route-id=@entrada.EntradaId>Editar</a>
-        }
-        else if (User.IsInRole("Usuario"))
-        {
-            <a class="btn btn-primary" asp-action="Delete" asp-route-id="@entrada.EntradaId">Eliminar</a>
-        }
+                    <a class="btn btn-success text-white mr-2" asp-controller="Preguntas" asp-action="Create" asp-route-id="@entrada.EntradaId">Agregar Pregunta</a>
+                }
 
-        <a class="btn btn-primary" asp-controller="Entradas" asp-action="Index">Atras</a>
+                <div>
+                    @if (User.IsInRole("Miembro") && entrada.MiembroId == UsuarioId)
+                    {
+                        <a class="btn btn-primary" asp-action="Edit" asp-route-id="@entrada.EntradaId">Editar</a>
+                    }
+                    else if (User.IsInRole("Usuario"))
+                    {
+                        <a class="btn btn-primary" asp-action="Delete" asp-route-id="@entrada.EntradaId">Eliminar</a>
+                    }
+                    <a class="btn btn-primary" asp-controller="Entradas" asp-action="Index">Atrás</a>
+                </div>
+            </div>
+        </div>
 
+        <div class="card p-2 m-2">
+            <div class="p-3 bg-primary text-white">
+                <h3 class="text-center text-white">Preguntas</h3>
+            </div>
+            <table class="table table-striped">
+                <thead class="alert-success text-black-50" align="center">
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.Miembro)</th>
+                        <th>@Html.DisplayNameFor(model => model.Fecha)</th>
+                        <th>@Html.DisplayNameFor(model => model.Descripcion)</th>
+                        <th>Cantidad de respuestas</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var unaPregunta in Model)
+                    {
+                        <tr>
+                            <td align="center">@Html.DisplayFor(modelItem => unaPregunta.Miembro.UserName)</td>
+                            <td align="center">@Html.DisplayFor(modelItem => unaPregunta.Fecha)</td>
+                            <td align="center">@Html.DisplayFor(modelItem => unaPregunta.Descripcion)</td>
+                            <td align="center">@unaPregunta.Respuestas.Count()</td>
+                            <td align="center">
+                                <a class="btn btn-success btn-sm m-1 text-white" asp-controller="Preguntas" asp-action="Details" asp-route-id="@unaPregunta.PreguntaId">Ver Pregunta</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="card-footer">
+                <p class="text-muted">Se encontraron: @Model.Count() Entradas en esta categoría</p>
+            </div>
+        </div>
     </div>
-    <br />
-    <h1 class="btn-info text-center text-white"> @Html.DisplayNameFor(model => model)</h1>
-    <table class="table">
-        <thead class="alert-secondary text-black-50">
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Miembro)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Fecha)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Descripcion)
-                </th>
-                <th>
-                    Cantidad de respuestas:
-                </th>
-                <th>
-                    Accion:
-                </th>
-
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var unaPregunta in Model)
-            {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => unaPregunta.Miembro.UserName)
-                </td>
-
-                <td>
-                    @Html.DisplayFor(modelItem => unaPregunta.Fecha)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => unaPregunta.Descripcion)
-                </td>
-                <td>
-                    @unaPregunta.Respuestas.Count()
-                </td>
-                <td>
-                    <a class="btn btn-success btn-sm m-1 text-white" asp-controller="Preguntas" asp-action="Details" asp-route-id="@unaPregunta.PreguntaId"> Ver Pregunta</a>
-
-                </td>
-            </tr>
-
-            }
-        </tbody>
-    </table>
-
-    <p class="">Se encontraron: @Model.Count() Preguntas en esta Entrada</p>
 </div>

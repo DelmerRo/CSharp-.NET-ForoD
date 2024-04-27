@@ -12,6 +12,7 @@ namespace FORO_D.Helpers
         public const string PersonaId = "Persona";
         public const string Anio = "Año";
         public const string NombreCompleto = "Nombre Completo";
+        public const string Usuario = "Usuario";
         public const string FechaAlta = "Fecha de Alta";
         public const string UserName = "Usuario";
         public const string Telefono = "Teléfono";
@@ -20,10 +21,11 @@ namespace FORO_D.Helpers
         public const string Contraseña = "Contraseña";
         public const string Password = "Contraseña";
 
-        public const string Titulo = "Título De Entrada";
-        public const string Descripcion = "Descripción de Entrada";
-        public const string FechaDePublicacion = "Publicado";
-        public const string NomCat = "Nombre de Categoría";
+        public const string Titulo = "Título";
+        public const string Descripción = "Descripción";
+        public const string Fecha = "Fecha";
+        public const string Categoria  = "Categoría";
+        public const string Estado = "Estado";
         public const string EntradasAsoc = "Entradas Asociadas";
         public const string RolName = "Nombre";
         public const string PassConfirm = "Confirmar contraseña";

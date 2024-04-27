@@ -24,7 +24,7 @@ namespace FORO_D.Models
         [DataType(DataType.MultilineText)]
         public string Descripcion { get; set; }
 
-        [Display(Name = Alias.FechaDePublicacion)]
+        [Display(Name = Alias.Fecha)]
         [DataType(DataType.DateTime, ErrorMessage = ErrMsgs.ErrMsgNotValid)]
         public DateTime Fecha { get; set; } = DateTime.UtcNow;
 
@@ -32,6 +32,7 @@ namespace FORO_D.Models
 
         public Entrada Entrada { get; set; }
 
+        [Display(Name = Alias.Usuario)]
         public Miembro Miembro { get; set; }
 
         public List<Respuesta> Respuestas{ get; set; }
