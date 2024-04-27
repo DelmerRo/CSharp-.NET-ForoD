@@ -1,60 +1,61 @@
 ﻿@model IEnumerable<FORO_D.Models.Usuario>
 
 @{
-    ViewData["Title"] = "Index";
-
+    ViewData["Title"] = "Lista De Administradores";
 }
+<div class="card col-md-12 p-3">
+    <div class="card">
+        <h1 class="btn-primary text-center text-white">@ViewData["Title"]</h1>
 
-<h1 class="btn-primary text-center text-white">Lista De Administradores</h1>
+        <div class="my-4">
+            <a class="btn btn-success" asp-controller="Account" asp-action="CrearAdministrador">
+                <i class="fas fa-plus"></i> Crear nuevo Administrador
+            </a>
+        </div>
 
-<p>
-    <a asp-controller="Account" asp-action="CrearAdministrador">Crear nuevo Administrador</a>
-</p>
-<table class="table">
-    <thead class="alert-secondary text-black-50">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.UserName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Nombre)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Apellido)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-           
-             <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.UserName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Nombre)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Apellido)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Email)
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Detalles</a> |
-                        @if(User.IsInRole("Usuario") && Int32.Parse(User.Claims.First().Value) != @item.Id) { 
-                        <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
-                        }
-                    </td>
-                    
-                </tr>
-
-        }
-        </tbody>
-</table>
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Email</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var admin in Model)
+                    {
+                        <tr>
+                            <td>@admin.UserName</td>
+                            <td>@admin.Nombre</td>
+                            <td>@admin.Apellido</td>
+                            <td>@admin.Email</td>
+                            <td>
+                                @if (User.IsInRole("Usuario") && Int32.Parse(User.Claims.First().Value) != admin.Id)
+                                {
+                                    <a class="btn btn-info btn-sm" asp-action="Details" asp-route-id="@admin.Id">
+                                        <i class="fas fa-info-circle"></i> Detalles
+                                    </a>
+                                }
+                                @if (User.IsInRole("Usuario") && Int32.Parse(User.Claims.First().Value) != admin.Id)
+                                {
+                                    <a class="btn btn-primary btn-sm" asp-action="Edit" asp-route-id="@admin.Id">
+                                        <i class="fas fa-edit"></i> Editar
+                                    </a>
+                                }
+                                @if (User.IsInRole("Usuario") && Int32.Parse(User.Claims.First().Value) != admin.Id)
+                                {
+                                    <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@admin.Id">
+                                        <i class="fas fa-trash-alt"></i> Eliminar
+                                    </a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

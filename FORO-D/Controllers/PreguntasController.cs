@@ -68,8 +68,9 @@ namespace FORO_D.Controllers
                 return NotFound();
             }
             var unaEntrada = _context.Entradas.FirstOrDefault(e => e.EntradaId == id);
-            if (unaEntrada.MiembroId!=MiID) {
-                if (unaEntrada == null || unaEntrada.Privada)
+            var habilitado = _context.MiembrosHabilitados.Any(mh => mh.EntradaId == id && mh.MiembroId == MiID & mh.Habilitado);
+            if (unaEntrada.MiembroId!=MiID ) {
+                if (unaEntrada == null || !habilitado)
                 {
                     return NotFound();
                 }
@@ -98,7 +99,7 @@ namespace FORO_D.Controllers
                 pregunta.Fecha=DateTime.Now;
                 _context.Add(pregunta);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Details", "Entradas", new { id = pregunta.EntradaId});
+                return RedirectToAction("Details", "Entradas", new { entradaId = pregunta.EntradaId });
 
             }
             return NotFound();
