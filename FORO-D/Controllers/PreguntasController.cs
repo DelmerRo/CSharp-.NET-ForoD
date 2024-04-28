@@ -58,31 +58,45 @@ namespace FORO_D.Controllers
         }
 
         [Authorize(Roles = "Miembro")]
-        
+
         // GET: Preguntas/Create
         public IActionResult Create(int? id)
         {
-            var MiID= Int32.Parse(_userManager.GetUserId(User)); 
-            if (id == null )
+           
+
+            if (id == null)
             {
                 return NotFound();
             }
-            var unaEntrada = _context.Entradas.FirstOrDefault(e => e.EntradaId == id);
-            var habilitado = _context.MiembrosHabilitados.Any(mh => mh.EntradaId == id && mh.MiembroId == MiID & mh.Habilitado);
-            if (unaEntrada.MiembroId!=MiID ) {
-                if (unaEntrada == null || !habilitado)
-                {
-                    return NotFound();
-                }
-            }
-            Pregunta pregunta = new ()
+
+            // Obtener la entrada correspondiente al ID
+            var entrada = _context.Entradas.FirstOrDefault(e => e.EntradaId == id);
+
+            if (entrada == null)
             {
-                EntradaId = id.Value,
+                return NotFound(); // La entrada no existe
+            }
+            var MiID = Int32.Parse(_userManager.GetUserId(User));
+            // Verificar si la entrada es privada o pública basándose en MiembrosHabilitados
+            bool esPrivada = _context.MiembrosHabilitados.Any(mh => mh.EntradaId == id && mh.MiembroId == MiID);
+            bool estaHabilitado = _context.MiembrosHabilitados.Any(mh => mh.EntradaId == id && mh.MiembroId == MiID && mh.Habilitado);
+
+            // Si la entrada es privada y el usuario no tiene acceso
+            if (esPrivada && !estaHabilitado)
+            {
+                return NotFound(); // El usuario no tiene permiso para acceder a esta entrada privada
+            }
+
+            // Si llega aquí, el usuario tiene acceso para crear una pregunta
+            Pregunta pregunta = new Pregunta
+            {
+                EntradaId = id.Value
             };
-            var entrada = _context.Entradas.FirstOrDefault(m => m.EntradaId == id);
+
             ViewBag.Entrada = entrada;
             return View(pregunta);
         }
+
 
         [Authorize(Roles = "Miembro")]
         // POST: Preguntas/Create

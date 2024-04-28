@@ -4,7 +4,14 @@
     @inject FORO_D.Data.ForoContext _context
 
 }
-
+@{
+    int UsuarioId = 0;
+    @if (User.IsInRole("Usuario") || User.IsInRole("Miembro"))
+        if (!string.IsNullOrEmpty(User.Claims.First().Value))
+        {
+            UsuarioId = Int32.Parse(User.Claims.First().Value);
+        }
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -152,7 +159,6 @@
                                 </li>
                             </ul>
 
-
                             <!-- Topbar Navbar -->
                             <ul class="navbar-nav ml-auto">
 
@@ -180,54 +186,64 @@
                                     </div>
                                 </li>
 
-                                <!-- Nav Item - Alerts -->
+                                <!-- Nav Item - Solicitudes Pendientes -->
+                                @{
+                                    var solicitudes = await _context.MiembrosHabilitados
+                                    .Include(mh => mh.Miembro)
+                                    .Include(mh => mh.Entrada)
+                                    .Where(mh => !mh.Habilitado && mh.MiembroId != UsuarioId && mh.Entrada.MiembroId == UsuarioId)
+                                    .ToListAsync();
+                                }
                                 <li class="nav-item dropdown no-arrow mx-1">
                                     <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <i class="fas fa-bell fa-fw"></i>
                                         <!-- Counter - Alerts -->
-                                        <span class="badge badge-danger badge-counter">3+</span>
+                                        <span class="badge badge-danger badge-counter">@solicitudes.Count+</span>
                                     </a>
                                     <!-- Dropdown - Alerts -->
                                     <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                          aria-labelledby="alertsDropdown">
                                         <h6 class="dropdown-header">
-                                            Alerts Center
+                                            Solicitudes
                                         </h6>
-                                        <a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="mr-3">
-                                                <div class="icon-circle bg-primary">
-                                                    <i class="fas fa-file-alt text-white"></i>
+                                        
+                                        @foreach (var solicitud in solicitudes)
+                                        {
+                                            <div class="dropdown-item d-flex align-items-center">
+                                                <div class="mr-3">
+                                                    <div class="icon-circle bg-primary">
+                                                        <i class="far fa-id-card text-white"></i>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="small text-gray-500">@DateTime.Now</div>
+                                                    <span class="font-weight-normal">De @solicitud.Miembro.NombreCompleto a </span>
+                                                    <span class="font-weight-bold">@solicitud.Entrada.Titulo</span>
+                                                    <div class="btn-group" role="group" aria-label="Acciones">
+                                                        <a class="btn btn-success btn-sm text-white mr-3"
+                                                           asp-controller="MiembrosHabilitados"
+                                                           asp-action="AceptarSolicitud"
+                                                           asp-route-entradaId="@solicitud.EntradaId"
+                                                           asp-route-miembroId="@solicitud.MiembroId">
+                                                            <i class="fas fa-check"></i>
+                                                            Aceptar
+                                                        </a>
+                                                        <a class="btn btn-danger btn-sm text-white"
+                                                           asp-controller="MiembrosHabilitados"
+                                                           asp-action="RechazarSolicitud"
+                                                           asp-route-entradaId="@solicitud.EntradaId"
+                                                           asp-route-miembroId="@solicitud.MiembroId">
+                                                            <i class="fas fa-times"></i>
+                                                            Rechazar
+                                                        </a>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div>
-                                                <div class="small text-gray-500">December 12, 2019</div>
-                                                <span class="font-weight-bold">A new monthly report is ready to download!</span>
-                                            </div>
-                                        </a>
-                                        <a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="mr-3">
-                                                <div class="icon-circle bg-success">
-                                                    <i class="fas fa-donate text-white"></i>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div class="small text-gray-500">December 7, 2019</div>
-                                                $290.29 has been deposited into your account!
-                                            </div>
-                                        </a>
-                                        <a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="mr-3">
-                                                <div class="icon-circle bg-warning">
-                                                    <i class="fas fa-exclamation-triangle text-white"></i>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div class="small text-gray-500">December 2, 2019</div>
-                                                Spending Alert: We've noticed unusually high spending for your account.
-                                            </div>
-                                        </a>
-                                        <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                                        }
+
+                                        <a class="dropdown-item text-center small text-gray-500" asp-controller="Entradas"
+                                           asp-action="SolicitudesPendientes">Mostrar Todas Las Alertas</a>
                                     </div>
                                 </li>
 
@@ -244,7 +260,7 @@
                                          aria-labelledby="messagesDropdown">
                                         <a class="dropdown-item d-flex align-items-center" href="#">
                                             <div class="dropdown-list-image mr-3">
-                                                <img class="rounded-circle" src="img/undraw_profile_1.svg"
+                                                <img class="rounded-circle" src="~/Imagen/undraw_profile_1.svg"
                                                      alt="...">
                                                 <div class="status-indicator bg-success"></div>
                                             </div>
@@ -258,7 +274,7 @@
                                         </a>
                                         <a class="dropdown-item d-flex align-items-center" href="#">
                                             <div class="dropdown-list-image mr-3">
-                                                <img class="rounded-circle" src="img/undraw_profile_2.svg"
+                                                <img class="rounded-circle" src="~/Imagen/undraw_profile_2.svg"
                                                      alt="...">
                                                 <div class="status-indicator"></div>
                                             </div>
@@ -272,7 +288,7 @@
                                         </a>
                                         <a class="dropdown-item d-flex align-items-center" href="#">
                                             <div class="dropdown-list-image mr-3">
-                                                <img class="rounded-circle" src="img/undraw_profile_3.svg"
+                                                <img class="rounded-circle" src="~/Imagen/undraw_profile_3.svg"
                                                      alt="...">
                                                 <div class="status-indicator bg-warning"></div>
                                             </div>
@@ -367,15 +383,17 @@
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                                <h5 class="modal-title" id="exampleModalLabel">¿Listo para salir?</h5>
                                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">×</span>
                                 </button>
                             </div>
-                            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                            <div class="modal-body">
+                                Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.
+                            </div>
                             <div class="modal-footer">
-                                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                                <a class="btn btn-primary" asp-area="" asp-controller="Account" asp-action="CerrarSesion" >Logout</a>
+                                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                                <a class="btn btn-primary" asp-area="" asp-controller="Account" asp-action="CerrarSesion">Cerrar Sesión</a>
                             </div>
                         </div>
                     </div>
@@ -966,7 +984,7 @@
                         <footer class="sticky-footer bg-white">
                             <div class="container my-auto">
                                 <div class="copyright text-center my-auto">
-                                    <span>Copyright &copy; Doro-D 2024</span>
+                                    <span>Copyright &copy; Foro-D 2024</span>
                                 </div>
                             </div>
                         </footer>

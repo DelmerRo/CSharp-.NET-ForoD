@@ -1,42 +1,51 @@
 ﻿@model IEnumerable<MiembrosHabilitados>
-@{ ViewData["Title"] = "Index"; }
+@{
+    ViewData["Title"] = "Solicitudes pendientes";
+}
 
-<h1 class="btn-primary text-center text-white">Solicitudes pendientes</h1>
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-body">
+            <h3 class="text-center text-white bg-primary p-2 rounded">Solicitudes pendientes</h3>
 
+            <table class="table table-striped table-bordered">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Nombre del Miembro</th>
+                        <th>Título de la Entrada</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Miembro.NombreCompleto</td>
+                            <td>@item.Entrada.Titulo</td>
+                            <td>
+                                <div class="btn-group" role="group" aria-label="Acciones">
+                                    <a class="btn btn-success btn-sm text-white mr-3"
+                                       asp-controller="MiembrosHabilitados"
+                                       asp-action="AceptarSolicitud"
+                                       asp-route-entradaId="@item.EntradaId"
+                                       asp-route-miembroId="@item.MiembroId">
+                                        <i class="fas fa-check mr-3"></i> Aceptar
+                                    </a>
+                                    <a class="btn btn-danger btn-sm text-white"
+                                       asp-controller="MiembrosHabilitados"
+                                       asp-action="RechazarSolicitud"
+                                       asp-route-entradaId="@item.EntradaId"
+                                       asp-route-miembroId="@item.MiembroId">
+                                        <i class="fas fa-times"></i> Rechazar
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
 
-<table class="table">
-    <thead class="alert-secondary text-black-50">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Miembro)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Entrada)
-            </th>
-            <th>
-            </th>
-            <th>
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-<tr>
-    <td>
-        @Html.DisplayFor(modelItem => item.Miembro.NombreCompleto)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Entrada.Titulo)
-    </td>
-    <td>
-        <a class="btn btn-success btn-sm m-1 text-white" asp-controller="MiembrosHabilitados" asp-action="AceptarSolicitud" asp-route-entradaId="@item.EntradaId" asp-route-miembroId="@item.MiembroId">Aceptar</a>
-    </td>
-    <td>
-        <a class="btn btn-danger btn-sm m-1 text-white" asp-controller="MiembrosHabilitados" asp-action="RechazarSolicitud" asp-route-entradaId="@item.EntradaId" asp-route-miembroId="@item.MiembroId">Rechazar</a>
-    </td>
-
-</tr>}
-    </tbody>
-</table>
-<p class="">Se encontraron: @Model.Count() solicitudes pendientes</p>
+            <p class="text-center mt-4">Se encontraron: <strong>@Model.Count()</strong> solicitudes pendientes</p>
+        </div>
+    </div>
+</div>

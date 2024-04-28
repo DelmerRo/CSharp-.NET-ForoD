@@ -5,51 +5,52 @@
     Entrada entrada = ViewBag.Entrada;
 }
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow">
-                <div class="card-body">
-                    <h4 class="card-title">@entrada.Titulo</h4>
-                    <p class="card-text">@entrada.Descripcion</p>
-                </div>
+<div class="card">
+    <div class="container p-3">
+        <!-- Detalles de la Entrada -->
+        <div class="card mb-4 shadow">
+            <div class="card-body">
+                <h4 class="card-title">@entrada.Titulo</h4>
+                <p class="card-text">@entrada.Descripcion</p>
+            </div>
+        </div>
+
+        <!-- Formulario para crear una pregunta -->
+        <div class="card shadow">
+            <div class="card-body">
+                <h2 class="card-title text-center mb-4">Haz una Pregunta</h2>
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input asp-for="EntradaId" class="form-control" hidden readonly />
+
+                    <div class="form-group">
+                        <textarea asp-for="Descripcion" class="form-control" rows="4" placeholder="Haz tu pregunta..." required></textarea>
+                        <span asp-validation-for="Descripcion" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" asp-for="Activa" />
+                        <label class="form-check-label" for="Activa">¿Activa?</label>
+                    </div>
+
+                    <div class="text-center">
+                        <a asp-controller="Entradas" asp-action="Details" asp-route-entradaId="@Model.EntradaId" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left me-2"></i> Volver a la Entrada
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-plus-circle me-2"></i> Publicar Pregunta
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-
-    <div class="row justify-content-center mt-4">
-        <div class="col-md-8">
-            <div class="card shadow">
-                <div class="card-body">
-                    <h2 class="card-title text-center mb-4">Haz una Pregunta</h2>
-                    <form asp-action="Create">
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <input asp-for="EntradaId" class="form-control" hidden readonly />
-
-                        <div class="form-group">
-                            <textarea asp-for="Descripcion" class="form-control" rows="4" placeholder="Haz tu pregunta..." required></textarea>
-                            <span asp-validation-for="Descripcion" class="text-danger"></span>
-                        </div>
-
-                        <div class="form-check mb-3">
-                            <input class="form-check-input" asp-for="Activa" />
-                            <label class="form-check-label" for="Activa">¿Activa?</label>
-                        </div>
-
-                        <div class="text-center">
-                            <a asp-controller="Entradas" asp-action="Details" asp-route-entradaId="@Model.EntradaId" class="btn btn-secondary"><i class="fas fa-arrow-left ml-2"></i> Volver a la Entrada</a>
-                            <button type="submit" class="btn btn-primary"><i class="fas fa-plus-circle me-2"></i> Publicar Pregunta</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
 </div>
 
 @section Scripts {
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+

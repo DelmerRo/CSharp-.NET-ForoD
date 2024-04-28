@@ -1,48 +1,49 @@
 ﻿@model FORO_D.Models.Respuesta
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Eliminar Respuesta";
 }
 
-<h1>Eliminar</h1>
+<div class="card shadow">
+    <div class="card-body">
+        <h1 class="text-center mb-4">Eliminar Respuesta</h1>
 
-<h3>¿Desea Eliminar?</h3>
-<div>
-    <h4>Respuesta</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Descripcion)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Descripcion)
-        </dd>
+        <div class="card mb-4">
+            <div class="card-body">
+                <h3 class="mb-4">¿Está seguro de que desea eliminar esta respuesta?</h3>
 
-        <dt hidden="hidden" class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Pregunta)
-        </dt>
-        <dd hidden="hidden" class = "col-sm-10">
-            @Html.DisplayFor(model => model.Pregunta.Descripcion)
-        </dd class>
+                <div class="row mb-3">
+                    <div class="col-sm-3"><strong>Descripción:</strong></div>
+                    <div class="col-sm-9">@Html.DisplayFor(model => model.Descripcion)</div>
+                </div>
 
-        <dt hidden="hidden" class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Miembro)
-        </dt>
-        <dd hidden="hidden" class = "col-sm-10">
-            @Html.DisplayFor(model => model.Miembro.Apellido)
-        </dd class>
+                <div class="row mb-3">
+                    <div class="col-sm-3"><strong>Fecha:</strong></div>
+                    <div class="col-sm-9">@Html.DisplayFor(model => model.Fecha)</div>
+                </div>
 
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Fecha)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Fecha)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="RespuestaId" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-controller="Preguntas" asp-action="Details" asp-route-id=@Model.PreguntaId>Atras</a>
-    </form>
+                <hr />
+
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="RespuestaId" />
+
+                    <div class="form-group mb-4">
+                        <p class="text-danger">¿Realmente desea eliminar esta respuesta?</p>
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt me-2"></i> Eliminar</button>
+                        <a asp-controller="Preguntas" asp-action="Details" asp-route-id="@Model.PreguntaId" class="btn btn-secondary"><i class="fas fa-arrow-left me-2"></i> Atrás</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
+
+@section Scripts {
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
