@@ -1,47 +1,46 @@
 ﻿@model FORO_D.Models.Respuesta
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Crear Respuesta";
     Pregunta pregunta = ViewBag.Pregunta;
 }
 
-<h4>Pregunta</h4>
-<p>@pregunta.Descripcion</p>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input asp-for="PreguntaId" class="form-control" hidden readonly />
-            @*<div hidden="hidden" class="form-group">
-                <label asp-for="PreguntaId" class="control-label"></label>
-                <select asp-for="PreguntaId" class ="form-control" asp-items="ViewBag.PreguntaId"></select>
-            </div>*@
-            @*<div hidden="hidden" class="form-group">
-                <label asp-for="MiembroId" class="control-label"></label>
-                <select asp-for="MiembroId" class ="form-control" asp-items="ViewBag.MiembroId"></select>
-            </div>*@
-            <div class="form-group">
-                <label asp-for="Descripcion" class="control-label"></label>
-                <textarea asp-for="Descripcion" class="form-control"></textarea>
-                <span asp-validation-for="Descripcion" class="text-danger"></span>
+<div class="card">
+    <div class="container p-3">
+        <!-- Detalles de la Pregunta -->
+        <div class="card mb-4 shadow">
+            <div class="card-body">
+                <h2 class="card-title">@pregunta.Descripcion</h2>
             </div>
-            <div hidden="hidden" class="form-group">
-                <label asp-for="Fecha" class="control-label"></label>
-                <input asp-for="Fecha" class="form-control" />
-                <span asp-validation-for="Fecha" class="text-danger"></span>
+        </div>
+
+        <!-- Formulario para crear una respuesta -->
+        <div class="card shadow">
+            <div class="card-body">
+                <h3 class="card-title text-center mb-4">Responder a la Pregunta</h3>
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input asp-for="PreguntaId" class="form-control" hidden readonly />
+
+                    <div class="form-group">
+                        <label for="Descripcion" class="form-label">Respuesta</label>
+                        <textarea asp-for="Descripcion" class="form-control" rows="6" placeholder="Escribe tu respuesta aquí..." required></textarea>
+                        <span asp-validation-for="Descripcion" class="text-danger"></span>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-plus-circle me-2"></i> Publicar Respuesta</button>
+                        <a asp-controller="Preguntas" asp-action="Details" asp-route-id="@Model.PreguntaId" class="btn btn-secondary"><i class="fas fa-arrow-left me-2"></i> Volver a la Pregunta</a>
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-controller="Preguntas" asp-action="Details" asp-route-id="@Model.PreguntaId">  Atrás</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
